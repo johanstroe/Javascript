@@ -24,15 +24,15 @@ function Testimonials() {
        
             
         <>{testimonials.map((testimonial, index) => (
-        <div className="quote1">
+        <div className="quote1" key={testimonial.id || index}>
             <img className="quoteicon" src={quoteicon} alt="" />
             
-                <div className="stars" key={index}>
-                    {Array.from({ length: 5 }).map((_, index) => (
-                        index < testimonial.starRating ? (
-                            <i key={index} className="fa-solid fa-star gold"></i>
+                <div className="stars">
+                    {Array.from({ length: 5 }).map((_, starIndex) => (
+                        starIndex < testimonial.starRating ? (
+                            <i key={starIndex} className="fa-solid fa-star gold"></i>
                         ) : (
-                            <i key={index} className="fa-regular fa-star"></i>
+                            <i key={starIndex} className="fa-regular fa-star"></i>
                         )
                     ))}
                     

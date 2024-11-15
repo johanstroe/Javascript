@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // Accordion-komponent
 const Accordion = ({ title, content }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const contentRef = useRef(null); // Referens till innehållet
 
     const toggleAccordion = () => {
         setIsOpen(!isOpen);
@@ -10,15 +11,24 @@ const Accordion = ({ title, content }) => {
     
     return (
         <div className="myaccordion">
-            <button onClick={toggleAccordion} className="accordion">
+        
+            <button onClick={toggleAccordion} className={`accordion ${isOpen? "active" : ""}`}>
                 <span className="accordionquestion">{title}</span>
-                <i className={`fa ${isOpen ? 'fa-chevron-up' : 'fa-chevron-down'} accordion-icon`}></i>
             </button>
-            {isOpen && (
-                <div className="panel">
+            
+            
+            <div
+                ref={contentRef}
+                className="panel"
+                style={{
+                    maxHeight: isOpen ? `${contentRef.current.scrollHeight}px` : "0px",
+                    overflow: "hidden",
+                    transition: "max-height 0.4s  ease-in, max-height 0.4s ease-out",
+                }}
+            >
                     <p className="accordiontext">{content}</p>
                 </div>
-            )}
+            
         </div>
     );
 };
@@ -26,6 +36,7 @@ const Accordion = ({ title, content }) => {
 // Faq-komponent
 function Faq() {
     const [faq, setFaq] = useState([]);
+    
 
     const fetchFaq = async () => {
         try {

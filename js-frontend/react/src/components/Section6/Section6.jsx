@@ -3,6 +3,9 @@ import phonecallicon from './../../assets/images/phonecall.svg'
 import supportchat from './../../assets/images/supportchat.svg'
 import notificationicon from './../../assets/images/notification.svg'
 import Faq from './Faq';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Section6 = () => {
   const [email, setEmail] = useState('');
@@ -11,10 +14,48 @@ const Section6 = () => {
   const handleEmailChange = (e) => {
     const value = e.target.value;
     setEmail(value);
-    // Enkel regex för att validera e-post
+    
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setIsEmailValid(emailPattern.test(value));
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (isEmailValid) {
+        try {
+            const response = await fetch('https://win24-assignment.azurewebsites.net/api/forms/subscribe', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    
+                    email: email,
+                    
+                }),
+            });
+
+            console.log('Response status:', response.status); 
+
+            if (response.ok) {
+                toast.success(`Thank you for subscribing to our newsletter!`);
+
+                setEmail('');
+                
+                
+            } else {
+                toast.error('Something went wrong. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    } 
+    
+    else {
+        toast.error('Please fill in a correct email-adress!');
+    }
+   
+};
   
   return (
     <section className="section6">
@@ -46,7 +87,7 @@ const Section6 = () => {
           informed about latest updates</h2>
 
         <div className="emailsubscribe">
-        <form className="formstyle">
+        <form className="formstyle" noValidate onSubmit={handleSubmit}>
             <i id="envelope" className="fa-sharp fa-light fa-envelope"></i>
             <input type="email" id="email" name="email" placeholder="Enter your email address" value={email} onChange={handleEmailChange} className={isEmailValid === true ? 'valid' : isEmailValid === false ? 'invalid' : ''}  required />
             <i className={`status-icon ${isEmailValid === true ? 'valid-icon' : isEmailValid === false ? 'invalid-icon' : ''}`}>
@@ -54,8 +95,9 @@ const Section6 = () => {
 
     </i>
      
-            <input className="submit" type="submit" value="Subscribe"   />
+            <input className="submit" type="submit" value="Subscribe"/>
           </form>
+          <ToastContainer />
         </div>
       </div>
 

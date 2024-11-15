@@ -1,17 +1,17 @@
-import React from 'react'
-import apple from './../../../assets/images/apple.svg'
-import google from './../../../assets/images/google.svg'
-import darkapple from './../../../assets/images/darkappstore.svg'
-import darkgoogle from './../../../assets/images/darkgoogleplay.svg'
+import React, { useContext } from 'react';
+import DarkModeContext from '../../../DarkModeContext';
+import apple from './../../../assets/images/apple-store.svg';
+import google from './../../../assets/images/google-play.svg';
+import darkapple from './../../../assets/images/appstore-dark.svg';
+import darkgoogle from './../../../assets/images/google-play-dark.svg';
 
-const Appstore = ({ isDarkMode }) => {
-    
+const Appstore = () => {
+    const { isDarkMode } = useContext(DarkModeContext);
+
 
     return (
-        
         <div className="appandgoogleplay">
- 
- {isDarkMode ? (
+            {isDarkMode ? (
                 <>
                     <a href="#">
                         <img
@@ -45,11 +45,11 @@ const Appstore = ({ isDarkMode }) => {
                         />
                     </a>
                 </>
-            )}
                 
-         
-    </div>
-        
-            );
-        };
-            export default Appstore
+            )}
+            
+        </div>
+    );
+};
+
+export default Appstore;
